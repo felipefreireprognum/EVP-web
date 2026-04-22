@@ -1,0 +1,95 @@
+.root {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Seção ── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+/* ── Texto de descrição ── */
+.descText {
+  font-size: 15px;
+  color: #111827;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Tabela de informações ── */
+.infoList {
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.infoRow {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  min-height: 48px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6B7280;
+  padding: 12px 20px;
+  border-right: 1px solid #F3F4F6;
+  background: #FAFAFA;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.infoValue {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Expectativa ── */
+.expectText {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.7;
+  margin: 0;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+  .root { padding: 20px 16px; gap: 24px; }
+  .infoRow { grid-template-columns: 1fr; }
+  .infoLabel {
+    border-right: none;
+    border-bottom: 1px solid #F3F4F6;
+    padding: 10px 16px 6px;
+    min-height: unset;
+    height: auto;
+  }
+  .infoValue { padding: 6px 16px 10px; }
+}

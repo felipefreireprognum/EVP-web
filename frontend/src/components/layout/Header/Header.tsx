@@ -6,14 +6,13 @@ import { useIsMobile } from '@/src/hooks/shared/useIsMobile';
 import { UserAvatar } from '@/src/components/shared/UserAvatar';
 import styles from './Header.module.css';
 
-const MOCK_USER = { nome: 'Felipe Freire', iniciais: 'FF' };
-
 interface HeaderProps { onMenuToggle?: () => void; menuOpen?: boolean; }
 
 export function Header({ onMenuToggle, menuOpen }: HeaderProps) {
   const isMobile = useIsMobile();
-  const { logout } = useAuth();
+  const { logout, username } = useAuth();
   const router = useRouter();
+  const iniciais = username.slice(0, 2).toUpperCase();
 
   function handleLogout() {
     logout();
@@ -37,8 +36,8 @@ export function Header({ onMenuToggle, menuOpen }: HeaderProps) {
       </div>
 
       <div className={styles.right}>
-        <UserAvatar nome={MOCK_USER.nome} iniciais={MOCK_USER.iniciais} size="sm" />
-        <span className={styles.userName}>{MOCK_USER.nome}</span>
+        <UserAvatar nome={username} iniciais={iniciais} size="sm" />
+        <span className={styles.userName}>{username}</span>
         <button className={styles.logoutBtn} onClick={handleLogout} title="Sair">
           <LogOut size={16} />
         </button>

@@ -43,6 +43,7 @@ export function TasksScreen() {
         task={selectedTask}
         isOpen={isDrawerOpen}
         onClose={handleDrawerClose}
+        onStatusChange={handleStatusChange}
       />
 
       <TaskFiltersModal />

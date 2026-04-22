@@ -25,16 +25,11 @@ import { formatDate, formatHours } from '@/src/utils/formatters/date';
 import type { Task, TaskStatus } from '@/src/types/task';
 import styles from './TaskKanban.module.css';
 
-/* ─────────────────────────────────────────
-   Card estático — usado no DragOverlay
-───────────────────────────────────────── */
-function StaticCard({ task, overlay }: { task: Task; overlay?: boolean }) {
+/* ── Card estático (DragOverlay) ── */
+function StaticCard({ task }: { task: Task }) {
   const cfg = TASK_STATUS_CONFIG[task.status];
   return (
-    <div
-      className={overlay ? styles.cardOverlay : styles.card}
-      style={{ borderLeftColor: cfg.border }}
-    >
+    <div className={styles.cardOverlay} style={{ borderLeftColor: cfg.border }}>
       <div className={styles.cardHead}>
         <span className={styles.cardId}>#{task.id}</span>
         <span className={styles.cardScat}>{task.scatNumero}</span>
@@ -43,24 +38,16 @@ function StaticCard({ task, overlay }: { task: Task; overlay?: boolean }) {
       <div className={styles.cardFoot}>
         <UserAvatar nome={task.responsavel.nome} iniciais={task.responsavel.iniciais} size="sm" />
         {task.horas > 0 && <span className={styles.cardMeta}>{formatHours(task.horas)}</span>}
-        {task.terminoPrevisto && (
-          <span className={styles.cardMeta}>{formatDate(task.terminoPrevisto)}</span>
-        )}
+        {task.terminoPrevisto && <span className={styles.cardMeta}>{formatDate(task.terminoPrevisto)}</span>}
       </div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────
-   Card arrastável — useSortable
-───────────────────────────────────────── */
+/* ── Card arrastável ── */
 function DraggableCard({ task, onClick }: { task: Task; onClick: () => void }) {
   const cfg = TASK_STATUS_CONFIG[task.status];
-  const {
-    attributes, listeners, setNodeRef,
-    transform, transition, isDragging,
-  } = useSortable({ id: task.id });
-
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id });
   return (
     <div
       ref={setNodeRef}
@@ -70,9 +57,9 @@ function DraggableCard({ task, onClick }: { task: Task; onClick: () => void }) {
       style={{
         borderLeftColor: cfg.border,
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition: transition ?? undefined,
       }}
-      onClick={e => { if (!isDragging) { e.stopPropagation(); onClick(); } }}
+      onClick={e => { e.stopPropagation(); onClick(); }}
     >
       <div className={styles.cardHead}>
         <span className={styles.cardId}>#{task.id}</span>
@@ -82,51 +69,39 @@ function DraggableCard({ task, onClick }: { task: Task; onClick: () => void }) {
       <div className={styles.cardFoot}>
         <UserAvatar nome={task.responsavel.nome} iniciais={task.responsavel.iniciais} size="sm" />
         {task.horas > 0 && <span className={styles.cardMeta}>{formatHours(task.horas)}</span>}
-        {task.terminoPrevisto && (
-          <span className={styles.cardMeta}>{formatDate(task.terminoPrevisto)}</span>
-        )}
+        {task.terminoPrevisto && <span className={styles.cardMeta}>{formatDate(task.terminoPrevisto)}</span>}
       </div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────
-   Coluna — useDroppable + SortableContext
-───────────────────────────────────────── */
+/* ── Coluna ── */
 function KanbanColumn({
   status, tasks, activeId, onCardClick,
 }: {
-  status: TaskStatus;
-  tasks: Task[];
-  activeId: number | null;
-  onCardClick: (t: Task) => void;
+  status: TaskStatus; tasks: Task[]; activeId: number | null; onCardClick: (t: Task) => void;
 }) {
   const cfg = TASK_STATUS_CONFIG[status];
   const { setNodeRef, isOver } = useDroppable({ id: status });
-
-  // mostra placeholder quando arrasta de outra coluna
-  const draggingFromOther = activeId !== null && !tasks.find(t => t.id === activeId);
+  const draggingFromElsewhere = activeId !== null && !tasks.find(t => t.id === activeId);
 
   return (
-    <div className={`${styles.column} ${isOver ? styles.columnOver : ''}`}>
-      <div className={styles.colHeader} style={{ borderBottomColor: cfg.border }}>
+    <div className={`${styles.column} ${isOver && draggingFromElsewhere ? styles.columnOver : ''}`}>
+      {/* Cabeçalho */}
+      <div className={styles.colHeader}>
+        <div className={styles.colAccent} style={{ background: cfg.border }} />
         <span className={styles.colTitle}>{cfg.label}</span>
         <span className={styles.colCount} style={{ background: cfg.bg, color: cfg.text }}>
           {tasks.length}
         </span>
       </div>
 
+      {/* Lista */}
       <div ref={setNodeRef} className={styles.colBody}>
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
-          {/* placeholder no topo quando hovering de outra coluna */}
-          {isOver && draggingFromOther && (
-            <div className={styles.dropPlaceholder} />
-          )}
-
           {tasks.length === 0 && !isOver && (
-            <div className={styles.colEmpty}>Sem tarefas</div>
+            <div className={styles.colEmpty}>Solte aqui</div>
           )}
-
           {tasks.map(t => (
             <DraggableCard key={t.id} task={t} onClick={() => onCardClick(t)} />
           ))}
@@ -136,16 +111,14 @@ function KanbanColumn({
   );
 }
 
-/* ─────────────────────────────────────────
-   Kanban principal
-───────────────────────────────────────── */
-interface TaskKanbanProps {
+/* ── Kanban ── */
+interface Props {
   tasks: Task[];
   onTaskClick: (task: Task) => void;
   onStatusChange: (taskId: number, status: TaskStatus) => Promise<void>;
 }
 
-export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: TaskKanbanProps) {
+export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: Props) {
   const [localTasks, setLocalTasks] = useState<Task[]>(propTasks);
   const [activeId, setActiveId]     = useState<number | null>(null);
   const [search, setSearch]         = useState('');
@@ -153,11 +126,10 @@ export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: Ta
   const { activeFiltersCount, openModal } = useTaskFiltersContext();
   const { toast } = useToast();
 
-  // sincroniza quando as props mudam (filtros, reload)
   useEffect(() => { setLocalTasks(propTasks); }, [propTasks]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
 
   const filtered = useMemo(() =>
@@ -174,56 +146,62 @@ export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: Ta
     return map;
   }, [filtered]);
 
-  const activeTask = useMemo(
-    () => localTasks.find(t => t.id === activeId) ?? null,
-    [localTasks, activeId],
-  );
+  const activeTask = useMemo(() => localTasks.find(t => t.id === activeId) ?? null, [localTasks, activeId]);
 
-  /* ── Helpers ── */
-  function taskStatus(id: number): TaskStatus | null {
-    return localTasks.find(t => t.id === id)?.status ?? null;
-  }
-
-  function resolveStatus(overId: string | number): TaskStatus | null {
-    const asStr = String(overId);
-    if (TASK_STATUS_ORDER.includes(asStr as TaskStatus)) return asStr as TaskStatus;
-    const overTask = localTasks.find(t => t.id === Number(overId));
-    return overTask?.status ?? null;
-  }
-
-  /* ── Drag start ── */
-  function handleDragStart(e: DragStartEvent) {
-    setActiveId(Number(e.active.id));
-  }
-
-  /* ── Drag over — move card em real-time ── */
+  /* Ao entrar numa coluna/card, reposiciona o card no array local */
   const handleDragOver = useCallback((e: DragOverEvent) => {
     const { active, over } = e;
     if (!over) return;
 
-    const dragId   = Number(active.id);
-    const newStatus = resolveStatus(over.id);
+    const dragId      = Number(active.id);
+    const overId      = over.id;
+    const isOverCol   = TASK_STATUS_ORDER.includes(String(overId) as TaskStatus);
+    const overTask    = !isOverCol ? localTasks.find(t => t.id === Number(overId)) : null;
+    const newStatus   = isOverCol ? (String(overId) as TaskStatus) : overTask?.status;
+
     if (!newStatus) return;
 
-    const current = taskStatus(dragId);
-    if (current === newStatus) return;
+    const activeTask = localTasks.find(t => t.id === dragId);
+    if (!activeTask) return;
+    if (activeTask.status === newStatus && (!overTask || overTask.id === dragId)) return;
 
-    setLocalTasks(prev =>
-      prev.map(t => t.id === dragId ? { ...t, status: newStatus } : t),
-    );
+    setLocalTasks(prev => {
+      const without = prev.filter(t => t.id !== dragId);
+      const updated  = { ...activeTask, status: newStatus };
+
+      if (isOverCol) {
+        // Entra na coluna → vai para o TOPO (posição 0) e empurra os demais
+        const firstIdx = without.findIndex(t => t.status === newStatus);
+        if (firstIdx === -1) return [...without, updated];
+        return [...without.slice(0, firstIdx), updated, ...without.slice(firstIdx)];
+      }
+
+      if (overTask && overTask.id !== dragId) {
+        // Passa por cima de um card → insere antes dele
+        const overIdx = without.findIndex(t => t.id === overTask.id);
+        return [...without.slice(0, overIdx), updated, ...without.slice(overIdx)];
+      }
+
+      return prev;
+    });
   }, [localTasks]);
 
-  /* ── Drag end — persiste ── */
+  function handleDragStart(e: DragStartEvent) {
+    setActiveId(Number(e.active.id));
+  }
+
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
     setActiveId(null);
-    if (!over) {
-      setLocalTasks(propTasks); // revert
-      return;
-    }
+
+    if (!over) { setLocalTasks(propTasks); return; }
 
     const dragId    = Number(active.id);
-    const newStatus = resolveStatus(over.id);
+    const overId    = over.id;
+    const isOverCol = TASK_STATUS_ORDER.includes(String(overId) as TaskStatus);
+    const overTask  = !isOverCol ? localTasks.find(t => t.id === Number(overId)) : null;
+    const newStatus = isOverCol ? (String(overId) as TaskStatus) : overTask?.status;
+
     if (!newStatus) { setLocalTasks(propTasks); return; }
 
     const original = propTasks.find(t => t.id === dragId);
@@ -233,26 +211,18 @@ export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: Ta
       const cfg = TASK_STATUS_CONFIG[newStatus];
       onStatusChange(dragId, newStatus)
         .then(() => toast.success(STRINGS.tarefas.kanban.statusAtualizado(cfg.label)))
-        .catch(() => {
-          toast.error(STRINGS.tarefas.kanban.erroAtualizar);
-          setLocalTasks(propTasks);
-        });
+        .catch(() => { toast.error(STRINGS.tarefas.kanban.erroAtualizar); setLocalTasks(propTasks); });
     }
   }
 
   return (
     <div className={styles.root}>
-      {/* Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
           <ViewToggle />
           <div className={styles.searchWrap}>
-            <Input
-              iconLeft={<Search size={14} />}
-              placeholder={STRINGS.tarefas.toolbar.busca}
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+            <Input iconLeft={<Search size={14} />} placeholder={STRINGS.tarefas.toolbar.busca}
+              value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
         <Button variant="secondary" size="sm" iconLeft={<Filter size={14} />} onClick={openModal}>
@@ -261,31 +231,17 @@ export function TaskKanban({ tasks: propTasks, onTaskClick, onStatusChange }: Ta
         </Button>
       </div>
 
-      {/* Board */}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
+      <DndContext sensors={sensors} collisionDetection={closestCenter}
+        onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
         <div className={styles.board}>
           {TASK_STATUS_ORDER.map(status => (
-            <KanbanColumn
-              key={status}
-              status={status}
-              tasks={byStatus.get(status) ?? []}
-              activeId={activeId}
-              onCardClick={onTaskClick}
-            />
+            <KanbanColumn key={status} status={status}
+              tasks={byStatus.get(status) ?? []} activeId={activeId} onCardClick={onTaskClick} />
           ))}
         </div>
 
-        <DragOverlay dropAnimation={{
-          duration: 200,
-          easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
-        }}>
-          {activeTask && <StaticCard task={activeTask} overlay />}
+        <DragOverlay dropAnimation={{ duration: 180, easing: 'cubic-bezier(0.2, 0, 0, 1)' }}>
+          {activeTask && <StaticCard task={activeTask} />}
         </DragOverlay>
       </DndContext>
     </div>
