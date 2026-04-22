@@ -1,0 +1,7 @@
+[
+  { "id": 1, "nome": "Erro de Sistema" },
+  { "id": 2, "nome": "Erro de Processo" },
+  { "id": 3, "nome": "Erro de Dados" },
+  { "id": 4, "nome": "Erro de Interface" },
+  { "id": 5, "nome": "Erro de Integração" }
+]

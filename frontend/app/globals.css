@@ -1,0 +1,215 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* === MARCA PROGNUM === */
+  /* Azul: #6291ec → #1b3981 */
+  --color-brand-blue-900: #1b3981;
+  --color-brand-blue-700: #3560C4;
+  --color-brand-blue:     #6291ec;
+  --color-brand-blue-400: #8BAEF5;
+  --color-brand-blue-100: #D6E2FB;
+  --color-brand-blue-50:  #EDF3FD;
+
+  /* Sage/creme: #f4f6ea → #dce0c4 */
+  --color-brand-sage:       #dce0c4;
+  --color-brand-sage-light: #f4f6ea;
+  --color-brand-sage-dark:  #c4c9a8;
+
+  --color-brand-white: #FFFFFF;
+
+  /* Gradientes da marca */
+  --gradient-blue:  linear-gradient(135deg, #6291ec 0%, #1b3981 100%);
+  --gradient-sage:  linear-gradient(135deg, #f4f6ea 0%, #dce0c4 100%);
+
+  /* === STATUS DE TAREFA === */
+  --color-status-disponivel-bg:       #D6E2FB;
+  --color-status-disponivel-text:     #1b3981;
+  --color-status-disponivel-border:   #8BAEF5;
+
+  --color-status-em-andamento-bg:     #FEF3C7;
+  --color-status-em-andamento-text:   #B45309;
+  --color-status-em-andamento-border: #FCD34D;
+
+  --color-status-em-pausa-bg:         #EDE9FE;
+  --color-status-em-pausa-text:       #6D28D9;
+  --color-status-em-pausa-border:     #C4B5FD;
+
+  --color-status-vencida-bg:          #FEE2E2;
+  --color-status-vencida-text:        #B91C1C;
+  --color-status-vencida-border:      #FCA5A5;
+
+  --color-status-concluida-bg:        #DCFCE7;
+  --color-status-concluida-text:      #15803D;
+  --color-status-concluida-border:    #86EFAC;
+
+  /* === STATUS DE SCAT === */
+  --color-scat-aberta-bg:         #D6E2FB;
+  --color-scat-aberta-text:       #1b3981;
+  --color-scat-em-andamento-bg:   #FEF3C7;
+  --color-scat-em-andamento-text: #B45309;
+  --color-scat-aguardando-bg:     #EDE9FE;
+  --color-scat-aguardando-text:   #6D28D9;
+  --color-scat-concluida-bg:      #DCFCE7;
+  --color-scat-concluida-text:    #15803D;
+  --color-scat-cancelada-bg:      #F1F5F9;
+  --color-scat-cancelada-text:    #64748B;
+
+  /* === PRIORIDADE === */
+  --color-prio-baixa-bg:    #F1F5F9;
+  --color-prio-baixa-text:  #64748B;
+  --color-prio-normal-bg:   #D6E2FB;
+  --color-prio-normal-text: #1b3981;
+  --color-prio-alta-bg:     #FEF3C7;
+  --color-prio-alta-text:   #B45309;
+  --color-prio-urgente-bg:  #FEE2E2;
+  --color-prio-urgente-text:#B91C1C;
+
+  /* === NEUTROS === */
+  --color-gray-50:  #F8FAFD;
+  --color-gray-100: #F0F4F9;
+  --color-gray-200: #E2E8F4;
+  --color-gray-300: #C8D5EE;
+  --color-gray-400: #94A3C8;
+  --color-gray-500: #64748B;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1E293B;
+  --color-gray-900: #0F172A;
+
+  /* === FEEDBACK === */
+  --color-success:    #15803D;
+  --color-success-bg: #DCFCE7;
+  --color-error:      #B91C1C;
+  --color-error-bg:   #FEE2E2;
+  --color-warning:    #B45309;
+  --color-warning-bg: #FEF3C7;
+  --color-info:       #1b3981;
+  --color-info-bg:    #D6E2FB;
+
+  /* === TIPOGRAFIA === */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs:    11px;
+  --font-size-sm:    12px;
+  --font-size-base:  14px;
+  --font-size-md:    15px;
+  --font-size-lg:    16px;
+  --font-size-xl:    18px;
+  --font-size-2xl:   20px;
+  --font-size-3xl:   24px;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --line-height-tight:    1.25;
+  --line-height-normal:   1.5;
+  --line-height-relaxed:  1.75;
+
+  /* === ESPAÇAMENTO === */
+  --spacing-1:   4px;
+  --spacing-2:   8px;
+  --spacing-3:  12px;
+  --spacing-4:  16px;
+  --spacing-5:  20px;
+  --spacing-6:  24px;
+  --spacing-8:  32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+
+  /* === BORDAS === */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   18px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+  --border-color:        #E2E8F4;
+  --border-color-strong: #C8D5EE;
+  --border-color-focus:  var(--color-brand-blue);
+
+  /* === SOMBRAS === */
+  --shadow-xs: 0 1px 3px rgba(27, 57, 129, 0.07);
+  --shadow-sm: 0 2px 8px rgba(27, 57, 129, 0.09), 0 0 0 1px rgba(27, 57, 129, 0.04);
+  --shadow-md: 0 4px 16px rgba(27, 57, 129, 0.12), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 28px rgba(27, 57, 129, 0.15), 0 4px 8px rgba(0,0,0,0.05);
+  --shadow-xl: 0 24px 48px rgba(27, 57, 129, 0.18), 0 8px 16px rgba(0,0,0,0.07);
+
+  /* === Z-INDEX === */
+  --z-dropdown:  100;
+  --z-sticky:    200;
+  --z-overlay:   250;
+  --z-modal:     300;
+  --z-drawer:    350;
+  --z-toast:     400;
+  --z-tooltip:   500;
+
+  /* === LAYOUT === */
+  --header-height:            60px;
+  --sidebar-width:           256px;
+  --sidebar-width-collapsed:  64px;
+  --content-padding-x:       var(--spacing-8);
+  --content-padding-y:       var(--spacing-6);
+  --drawer-width:            500px;
+  --filters-modal-width:     660px;
+  --filters-modal-max-height: 90vh;
+
+  /* === ANIMAÇÕES === */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow:   0.35s ease;
+}
+
+html, body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-900);
+  background-color: #F4F5F7;
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+#__next, main { height: 100%; }
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select { font-family: inherit; }
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-brand-sage); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand-sage-dark); }
+
+/* Skeleton animation */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.skeleton {
+  background: var(--color-gray-200);
+  border-radius: var(--radius-md);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fadeIn { animation: fadeIn 0.2s ease forwards; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --content-padding-x: var(--spacing-4);
+    --content-padding-y: var(--spacing-4);
+    --drawer-width: 100vw;
+    --filters-modal-width: 95vw;
+  }
+}

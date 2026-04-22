@@ -1,0 +1,17 @@
+[
+  { "id": 1,  "nome": "Ana Carolina Silva",      "email": "ana.silva@prognum.com.br",     "setor_id": 1, "avatar_url": null },
+  { "id": 2,  "nome": "Bruno Henrique Costa",    "email": "bruno.costa@prognum.com.br",   "setor_id": 1, "avatar_url": null },
+  { "id": 3,  "nome": "Camila Rodrigues",        "email": "camila.rodrigues@prognum.com.br", "setor_id": 2, "avatar_url": null },
+  { "id": 4,  "nome": "Diego Ferreira",          "email": "diego.ferreira@prognum.com.br","setor_id": 1, "avatar_url": null },
+  { "id": 5,  "nome": "Elaine Martins",          "email": "elaine.martins@prognum.com.br","setor_id": 3, "avatar_url": null },
+  { "id": 6,  "nome": "Felipe Oliveira",         "email": "felipe.oliveira@prognum.com.br","setor_id": 4, "avatar_url": null },
+  { "id": 7,  "nome": "Gabriela Santos",         "email": "gabriela.santos@prognum.com.br","setor_id": 2, "avatar_url": null },
+  { "id": 8,  "nome": "Henrique Almeida",        "email": "henrique.almeida@prognum.com.br","setor_id": 1, "avatar_url": null },
+  { "id": 9,  "nome": "Isabela Cunha",           "email": "isabela.cunha@prognum.com.br", "setor_id": 5, "avatar_url": null },
+  { "id": 10, "nome": "João Pedro Nunes",        "email": "joao.nunes@prognum.com.br",    "setor_id": 1, "avatar_url": null },
+  { "id": 11, "nome": "Karen Pinto",             "email": "karen.pinto@prognum.com.br",   "setor_id": 3, "avatar_url": null },
+  { "id": 12, "nome": "Lucas Teixeira",          "email": "lucas.teixeira@prognum.com.br","setor_id": 1, "avatar_url": null },
+  { "id": 13, "nome": "Mariana Souza",           "email": "mariana.souza@prognum.com.br", "setor_id": 4, "avatar_url": null },
+  { "id": 14, "nome": "Nicolau Barbosa",         "email": "nicolau.barbosa@prognum.com.br","setor_id": 2, "avatar_url": null },
+  { "id": 15, "nome": "Patrícia Lima",           "email": "patricia.lima@prognum.com.br", "setor_id": 3, "avatar_url": null }
+]

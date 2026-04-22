@@ -1,0 +1,113 @@
+.root {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* ── Seção ── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue-700);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  padding-bottom: var(--spacing-2);
+  border-bottom: 2px solid var(--color-brand-blue-100);
+}
+
+/* ── Grid de campos ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3) var(--spacing-5);
+}
+
+.gridFull { grid-column: 1 / -1; }
+
+/* ── Campo ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.fieldLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fieldValue {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-800);
+  font-weight: var(--font-weight-medium);
+}
+
+.fieldEmpty { color: var(--color-gray-300); }
+
+/* ── Métricas (destaque) ── */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-3);
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--color-brand-blue-50);
+  border: 1px solid var(--color-brand-blue-100);
+  border-radius: var(--radius-xl);
+  gap: 4px;
+  text-align: center;
+}
+
+.metricValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue-900);
+}
+
+.metricLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ── Tags (com erro, excluída, origem) ── */
+.tagsRow { display: flex; gap: var(--spacing-2); flex-wrap: wrap; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.tagErro { background: var(--color-error-bg); color: var(--color-error); border: 1px solid #FCA5A5; }
+.tagOk   { background: var(--color-success-bg); color: var(--color-success); border: 1px solid #86EFAC; }
+.tagOrigem { background: var(--color-brand-blue-50); color: var(--color-brand-blue-900); border: 1px solid var(--color-brand-blue-100); }
+.tagExcluida { background: var(--color-gray-100); color: var(--color-gray-500); border: 1px solid var(--border-color); text-decoration: line-through; }
+
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  .metricsGrid { grid-template-columns: repeat(3, 1fr); }
+}

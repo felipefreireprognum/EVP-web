@@ -1,0 +1,14 @@
+.wrapper { display: inline-flex; align-items: center; }
+.withName { gap: var(--spacing-2); }
+.avatar {
+  border-radius: var(--radius-full);
+  color: white;
+  font-weight: var(--font-weight-semibold);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.sm { width: 24px; height: 24px; font-size: 9px; }
+.md { width: 32px; height: 32px; font-size: 11px; }
+.lg { width: 40px; height: 40px; font-size: 14px; }
+.name { font-size: var(--font-size-base); color: var(--color-gray-800); }

@@ -1,0 +1,9 @@
+[
+  { "id": 1, "nome": "Melhoria" },
+  { "id": 2, "nome": "Correção de Bug" },
+  { "id": 3, "nome": "Nova Funcionalidade" },
+  { "id": 4, "nome": "Suporte" },
+  { "id": 5, "nome": "Documentação" },
+  { "id": 6, "nome": "QA" },
+  { "id": 7, "nome": "Integração" }
+]

@@ -1,0 +1,74 @@
+.header {
+  height: var(--header-height);
+  background: var(--gradient-blue);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--spacing-6);
+  box-shadow: 0 2px 16px rgba(27, 57, 129, 0.30);
+  flex-shrink: 0;
+  z-index: var(--z-sticky);
+  position: relative;
+}
+
+.left { display: flex; align-items: center; gap: var(--spacing-4); }
+.right { display: flex; align-items: center; gap: var(--spacing-3); }
+
+.menuBtn {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  border: none; background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  color: white; cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.menuBtn:hover { background: rgba(255,255,255,0.28); }
+
+.brand { display: flex; align-items: center; gap: var(--spacing-3); }
+
+.logoMark {
+  background: #FFE87C;
+  color: #1b3981;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  letter-spacing: 0.10em;
+}
+
+.brandName {
+  color: rgba(255,255,255,0.95);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.01em;
+}
+
+.brandSep {
+  color: rgba(255,255,255,0.40);
+  font-weight: var(--font-weight-regular);
+  margin: 0 2px;
+}
+
+.userName {
+  color: rgba(255,255,255,0.90);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  background: rgba(255,255,255,0.14);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.logoutBtn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: none; background: rgba(255,255,255,0.14);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.80);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.logoutBtn:hover { background: rgba(255,255,255,0.25); color: #ffffff; }
+
+@media (max-width: 768px) {
+  .brandName { display: none; }
+  .userName { display: none; }
+  .header { padding: 0 var(--spacing-4); }
+}

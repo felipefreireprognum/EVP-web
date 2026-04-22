@@ -1,0 +1,86 @@
+.sidebar {
+  width: var(--sidebar-width);
+  background: #ffffff;
+  border-right: 1px solid #E8ECF2;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.section { padding: var(--spacing-4) 0; flex: 1; }
+
+.sectionLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-400);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 var(--spacing-5) var(--spacing-2);
+}
+
+.item {
+  display: flex; align-items: center; gap: var(--spacing-3);
+  padding: 10px var(--spacing-4);
+  margin: 2px var(--spacing-3);
+  color: var(--color-gray-500);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-lg);
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-800);
+}
+
+.active {
+  background: var(--gradient-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(27, 57, 129, 0.25);
+}
+
+.active .itemIcon { color: #ffffff; }
+.item:not(.active) .itemIcon { color: var(--color-gray-400); }
+
+.itemIcon { flex-shrink: 0; transition: color var(--transition-fast); }
+.itemLabel { flex: 1; }
+
+.activePip {
+  width: 6px; height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.65);
+}
+
+.footer {
+  padding: var(--spacing-4) var(--spacing-5);
+  border-top: 1px solid #E8ECF2;
+}
+
+.version { font-size: var(--font-size-xs); color: var(--color-gray-400); }
+
+/* Mobile */
+.mobileOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: calc(var(--z-modal) - 1);
+  backdrop-filter: blur(2px);
+}
+
+.mobileHidden { transform: translateX(-100%); }
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    bottom: 0;
+    z-index: var(--z-modal);
+    transition: transform var(--transition-normal);
+    width: min(var(--sidebar-width), 85vw);
+  }
+}

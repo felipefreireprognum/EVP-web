@@ -1,0 +1,10 @@
+[
+  { "id": 1, "nome": "ERP Municipal v3",         "cliente_id": 1 },
+  { "id": 2, "nome": "Portal do Cidadão v2",     "cliente_id": 1 },
+  { "id": 3, "nome": "Sistema de Folha v5",      "cliente_id": 2 },
+  { "id": 4, "nome": "Prontuário Eletrônico v4", "cliente_id": 3 },
+  { "id": 5, "nome": "CRM Saúde v2",             "cliente_id": 4 },
+  { "id": 6, "nome": "Integração DETRAN v1",     "cliente_id": 5 },
+  { "id": 7, "nome": "App Educação v3",          "cliente_id": 6 },
+  { "id": 8, "nome": "BI Judiciário v2",         "cliente_id": 7 }
+]

@@ -1,0 +1,96 @@
+.root { display: flex; flex-direction: column; height: 100%; min-height: 0; background: transparent; }
+
+.loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--spacing-4); height: 100%; }
+
+.pageHeader {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: var(--spacing-4);
+  padding: var(--spacing-6) var(--spacing-8) var(--spacing-5);
+  flex-shrink: 0; flex-wrap: wrap;
+}
+
+.pageTitle { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); letter-spacing: -0.02em; }
+.pageSubtitle { font-size: var(--font-size-sm); color: var(--color-gray-500); margin-top: var(--spacing-1); }
+.searchWrap { min-width: 240px; max-width: 360px; flex: 1; }
+
+.tableCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin: 0 var(--spacing-8) var(--spacing-6);
+  background: var(--color-brand-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.tableWrap { flex: 1; overflow: auto; min-height: 0; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--font-size-base); }
+
+.th {
+  background: var(--color-brand-blue-50);
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold);
+  color: var(--color-gray-600); border-bottom: 2px solid var(--color-brand-blue-100);
+  white-space: nowrap; position: sticky; top: 0; z-index: 1; user-select: none;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.thInner { display: flex; align-items: center; gap: var(--spacing-1); cursor: pointer; }
+.sortIcon { display: flex; color: var(--color-brand-blue); }
+.sortInactive { color: var(--color-gray-300); }
+
+.tr {
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.tr:hover { background: var(--color-brand-sage-light); }
+.tr:last-child { border-bottom: none; }
+
+.td { padding: 14px var(--spacing-4); color: var(--color-gray-800); vertical-align: middle; white-space: nowrap; }
+
+.scatLink {
+  color: var(--color-brand-blue);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+}
+.scatLink:hover { text-decoration: underline; }
+.titleCell { max-width: 280px; overflow: hidden; text-overflow: ellipsis; display: block; white-space: nowrap; }
+
+.progBar { display: flex; align-items: center; gap: var(--spacing-2); min-width: 120px; }
+.progBar > :first-child {
+  flex: 1; height: 8px; background: var(--color-gray-200);
+  border-radius: var(--radius-full); overflow: hidden;
+}
+.progFill {
+  height: 100%;
+  background: linear-gradient(90deg, #6291ec 0%, #1b3981 100%);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+.progLabel { font-size: var(--font-size-xs); color: var(--color-gray-500); min-width: 34px; text-align: right; font-weight: var(--font-weight-semibold); }
+
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--spacing-3) var(--spacing-5); border-top: 1px solid var(--border-color); flex-shrink: 0;
+  background: var(--color-gray-50);
+}
+.pgInfo { font-size: var(--font-size-sm); color: var(--color-gray-500); }
+.pgControls { display: flex; gap: var(--spacing-2); }
+.pgBtn {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: 1.5px solid var(--border-color-strong);
+  border-radius: var(--radius-md); background: white; color: var(--color-gray-600);
+  cursor: pointer; transition: all var(--transition-fast);
+}
+.pgBtn:hover:not(:disabled) { background: var(--color-brand-blue-50); border-color: var(--color-brand-blue-400); color: var(--color-brand-blue); }
+.pgBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+  .pageHeader { padding: var(--spacing-4); }
+  .tableCard { margin: 0 var(--spacing-4) var(--spacing-4); }
+  .td, .th { padding: var(--spacing-2) var(--spacing-3); }
+  .pagination { padding: var(--spacing-3) var(--spacing-4); }
+}

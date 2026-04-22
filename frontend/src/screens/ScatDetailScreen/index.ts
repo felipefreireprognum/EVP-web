@@ -1,0 +1,1 @@
+export { ScatDetailScreen } from './ScatDetailScreen';

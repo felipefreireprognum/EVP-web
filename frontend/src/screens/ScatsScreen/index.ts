@@ -1,0 +1,1 @@
+export { ScatsScreen } from './ScatsScreen';

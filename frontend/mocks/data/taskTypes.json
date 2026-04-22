@@ -1,0 +1,9 @@
+[
+  { "id": 1, "nome": "Produto" },
+  { "id": 2, "nome": "Suporte" },
+  { "id": 3, "nome": "QA" },
+  { "id": 4, "nome": "Documentação" },
+  { "id": 5, "nome": "Infraestrutura" },
+  { "id": 6, "nome": "Deploy" },
+  { "id": 7, "nome": "Code Review" }
+]

@@ -1,0 +1,12 @@
+[
+  { "id": 1,  "nome": "Prefeitura de São Paulo",       "codigo": "PMSP01" },
+  { "id": 2,  "nome": "Governo do Estado do Paraná",   "codigo": "SEPR02" },
+  { "id": 3,  "nome": "Secretaria de Saúde - RJ",      "codigo": "SSRJ03" },
+  { "id": 4,  "nome": "Hospital das Clínicas",         "codigo": "HCSP04" },
+  { "id": 5,  "nome": "DETRAN - MG",                   "codigo": "DTMG05" },
+  { "id": 6,  "nome": "Ministério da Educação",        "codigo": "MEC006" },
+  { "id": 7,  "nome": "Tribunal de Justiça - RS",      "codigo": "TJRS07" },
+  { "id": 8,  "nome": "INSS - Nacional",               "codigo": "INSS08" },
+  { "id": 9,  "nome": "SEFAZ - BA",                    "codigo": "SFBA09" },
+  { "id": 10, "nome": "Câmara Municipal de Curitiba",  "codigo": "CMCW10" }
+]

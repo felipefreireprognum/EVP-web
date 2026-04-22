@@ -1,0 +1,6 @@
+[
+  { "id": 1, "nome": "Entregue" },
+  { "id": 2, "nome": "Cancelado" },
+  { "id": 3, "nome": "Suspenso" },
+  { "id": 4, "nome": "Incorporado na Versão" }
+]

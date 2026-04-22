@@ -1,0 +1,7 @@
+[
+  { "id": 1, "nome": "Desenvolvimento", "ativo": true },
+  { "id": 2, "nome": "QA", "ativo": true },
+  { "id": 3, "nome": "Suporte", "ativo": true },
+  { "id": 4, "nome": "Produto", "ativo": true },
+  { "id": 5, "nome": "Infraestrutura", "ativo": false }
+]
