@@ -119,6 +119,32 @@
   background: white; cursor: pointer;
 }
 
+/* Ações rápidas na linha */
+.actionsCell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rowBtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+}
+.rowBtn:hover { transform: scale(1.1); }
+
+.rowBtnPlay   { background: var(--color-status-disponivel-bg);   color: var(--color-status-disponivel-text); }
+.rowBtnPause  { background: var(--color-status-em-pausa-bg);     color: var(--color-status-em-pausa-text); }
+.rowBtnFinish { background: var(--color-status-concluida-bg);    color: var(--color-status-concluida-text); }
+
+.rowBtnPlay:hover   { background: var(--color-brand-blue-100); }
+.rowBtnPause:hover  { background: #DDD6FE; }
+.rowBtnFinish:hover { background: #BBF7D0; }
+
 @media (max-width: 768px) {
   .toolbar { padding: var(--spacing-3) var(--spacing-4); }
   .searchWrap { min-width: 0; }

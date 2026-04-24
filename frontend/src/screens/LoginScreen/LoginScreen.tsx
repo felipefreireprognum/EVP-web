@@ -17,7 +17,7 @@ export function LoginScreen() {
 
   useEffect(() => {
     if (isChecked && isAuthenticated) {
-      router.replace(ROUTES.TAREFAS);
+      router.replace(ROUTES.INICIO);
     }
   }, [isChecked, isAuthenticated, router]);
 
@@ -28,7 +28,7 @@ export function LoginScreen() {
     await new Promise(r => setTimeout(r, 500));
     const ok = login(username, password);
     if (ok) {
-      router.replace(ROUTES.TAREFAS);
+      router.replace(ROUTES.INICIO);
     } else {
       setError('Usuário ou senha incorretos.');
       setLoading(false);

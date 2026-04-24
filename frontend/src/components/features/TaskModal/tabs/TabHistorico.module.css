@@ -1,0 +1,154 @@
+.root {
+  padding: var(--spacing-8) var(--spacing-10);
+}
+
+/* ── Empty state ── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-12) var(--spacing-8);
+  text-align: center;
+}
+
+.emptyIcon { color: var(--color-gray-300); }
+
+.emptyTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-soft);
+}
+
+.emptySub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  max-width: 340px;
+  line-height: var(--line-height-relaxed);
+}
+
+/* ── Top bar ── */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+}
+
+.topBarIcon { color: var(--color-text-muted); flex-shrink: 0; }
+
+.topBarLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  flex: 1;
+}
+
+.eventCount {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  background: var(--color-primary-whisper);
+  color: var(--color-primary-deep);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Timeline ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 0 var(--spacing-4);
+}
+
+.dotCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dot {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: var(--spacing-1);
+}
+
+.line {
+  width: 2px;
+  background: var(--border-color);
+  flex: 1;
+  margin: 4px 0;
+  min-height: 24px;
+  border-radius: 1px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4) var(--spacing-5);
+  margin-bottom: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.cardLast { margin-bottom: 0; }
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+}
+
+.cardLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.cardTime {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.cardDate {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+
+.cardDuration {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-1);
+  padding-top: var(--spacing-1);
+  border-top: 1px solid var(--color-gray-100);
+}
+.cardDuration strong { color: var(--color-text-soft); }
+
+/* Cores dos dots e labels */
+.dotIniciar { background: var(--color-status-disponivel-bg); color: var(--color-status-disponivel-text); }
+.dotIniciarText { color: var(--color-status-disponivel-text); }
+
+.dotPausar { background: var(--color-status-em-pausa-bg); color: var(--color-status-em-pausa-text); }
+.dotPausarText { color: var(--color-status-em-pausa-text); }
+
+.dotFinalizar { background: var(--color-status-concluida-bg); color: var(--color-status-concluida-text); }
+.dotFinalizarText { color: var(--color-status-concluida-text); }
+
+@media (max-width: 600px) {
+  .root { padding: var(--spacing-5) var(--spacing-4); }
+}

@@ -39,6 +39,7 @@ export function mapTask(
     id: api.id,
     scatId: api.scat_id,
     scatNumero: api.scat_numero,
+    scatTitulo: api.scat_titulo,
     descricao: api.descricao,
     status: api.status,
     responsavel: mapUser(user),

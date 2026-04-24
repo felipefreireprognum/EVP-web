@@ -12,6 +12,7 @@ export const STRINGS = {
     openScat:   'Abrir SCAT',
   },
   nav: {
+    inicio:  'Início',
     tarefas: 'Tarefas',
     scats:   'SCATs',
     sistema: 'EVP — Gestão',

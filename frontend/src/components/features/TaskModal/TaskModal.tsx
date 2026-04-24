@@ -1,22 +1,26 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { X, Play, Pause, CheckCircle2, ExternalLink, Timer } from 'lucide-react';
+import { X, Play, Pause, CheckCircle2, ExternalLink, Timer, FileText } from 'lucide-react';
 import { TaskStatusBadge } from '@/src/components/shared/StatusBadge';
-import { TabDescricao } from './tabs/TabDescricao';
-import { TabPrevisao }  from './tabs/TabPrevisao';
-import { TabExecucao }  from './tabs/TabExecucao';
-import { formatDate } from '@/src/utils/formatters/date';
+import { TabDescricao }  from './tabs/TabDescricao';
+import { TabDetalhes }   from './tabs/TabDetalhes';
+import { TabPrevisao }   from './tabs/TabPrevisao';
+import { TabExecucao }   from './tabs/TabExecucao';
+import { TabHistorico }  from './tabs/TabHistorico';
 import { ROUTES } from '@/src/constants/routes';
-import type { Task, TaskStatus } from '@/src/types/task';
+import { taskService } from '@/src/services/taskService';
+import type { Task, TaskStatus, TimerEvent } from '@/src/types/task';
 import styles from './TaskModal.module.css';
 
-type TabId = 'descricao' | 'previsao' | 'execucao';
+type TabId = 'descricao' | 'previsao' | 'detalhes' | 'execucao' | 'historico';
 
 const TABS: { id: TabId; label: string }[] = [
-  { id: 'descricao', label: 'Descrição' },
-  { id: 'previsao',  label: 'Previsão' },
-  { id: 'execucao',  label: 'Execução' },
+  { id: 'descricao',  label: 'Descrição' },
+  { id: 'previsao',   label: 'Previsão' },
+  { id: 'detalhes',   label: 'Detalhes' },
+  { id: 'execucao',   label: 'Execução' },
+  { id: 'historico',  label: 'Histórico' },
 ];
 
 function fmtTimer(s: number): string {
@@ -38,6 +42,7 @@ export function TaskModal({ task, isOpen, onClose, onStatusChange }: Props) {
   const [localStatus, setLocalStatus] = useState<TaskStatus | null>(null);
   const [running,     setRunning]     = useState(false);
   const [elapsed,     setElapsed]     = useState(0);
+  const [timerEvents, setTimerEvents] = useState<TimerEvent[]>([]);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -46,6 +51,7 @@ export function TaskModal({ task, isOpen, onClose, onStatusChange }: Props) {
       setLocalStatus(task.status);
       setRunning(task.status === 'em_andamento');
       setElapsed(0);
+      setTimerEvents(taskService.getTimerEvents(task.id));
     } else {
       setRunning(false);
     }
@@ -73,6 +79,11 @@ export function TaskModal({ task, isOpen, onClose, onStatusChange }: Props) {
   async function changeStatus(newStatus: TaskStatus) {
     setLocalStatus(newStatus);
     setRunning(newStatus === 'em_andamento');
+    const eventType = newStatus === 'em_andamento' ? 'iniciar'
+      : newStatus === 'em_pausa' ? 'pausar'
+      : 'finalizar';
+    taskService.logTimerEvent(task!.id, eventType);
+    setTimerEvents(taskService.getTimerEvents(task!.id));
     await onStatusChange?.(task!.id, newStatus);
   }
 
@@ -81,51 +92,39 @@ export function TaskModal({ task, isOpen, onClose, onStatusChange }: Props) {
   const canFinish = status !== 'concluida';
   const isClosed  = status === 'concluida';
 
-  const inicio          = formatDate(task.inicio);
-  const terminoPrevisto = formatDate(task.terminoPrevisto);
-  const terminadoEm     = formatDate(task.terminadoEm);
-
   return (
     <div className={styles.overlay} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div className={styles.dialog}>
 
+        {/* ── SCAT bar (topo) ── */}
+        <div className={styles.scatBar}>
+          <div className={styles.scatBarLeft}>
+            <FileText size={13} className={styles.scatBarIcon} />
+            <span className={styles.scatBarNum}>{task.scatNumero}</span>
+            {task.scatTitulo && (
+              <>
+                <span className={styles.scatBarSep}>·</span>
+                <span className={styles.scatBarTitle}>{task.scatTitulo}</span>
+              </>
+            )}
+          </div>
+          <div className={styles.scatBarRight}>
+            <Link href={ROUTES.SCAT_DETAIL(task.scatId)} onClick={onClose} className={styles.scatLink}>
+              Ver SCAT <ExternalLink size={10} />
+            </Link>
+            <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar">
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+
         {/* ── Header fixo ── */}
         <div className={styles.header}>
 
-          {/* Linha 1: identidade + fechar */}
-          <div className={styles.headerTop}>
-            <div className={styles.headerMeta}>
-              <span className={styles.taskId}>#{task.id}</span>
-              <span className={styles.dot}>·</span>
-              <span className={styles.scatNum}>{task.scatNumero}</span>
-              <Link href={ROUTES.SCAT_DETAIL(task.scatId)} onClick={onClose} className={styles.scatLink}>
-                Ver SCAT <ExternalLink size={10} />
-              </Link>
-            </div>
-            <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar">
-              <X size={15} />
-            </button>
-          </div>
-
-          {/* Título */}
-          <h2 className={styles.title}>{task.descricao}</h2>
-
-          {/* Datas — sempre no header */}
-          <div className={styles.datesRow}>
-            <span className={styles.dateItem}>
-              <span className={styles.dateLabel}>Início</span>
-              <span className={styles.dateValue}>{inicio || '—'}</span>
-            </span>
-            <span className={styles.dateSep} />
-            <span className={styles.dateItem}>
-              <span className={styles.dateLabel}>Previsão de término</span>
-              <span className={styles.dateValue}>{terminoPrevisto || '—'}</span>
-            </span>
-            <span className={styles.dateSep} />
-            <span className={styles.dateItem}>
-              <span className={styles.dateLabel}>Concluída em</span>
-              <span className={styles.dateValue}>{terminadoEm || '—'}</span>
-            </span>
+          {/* Identidade da tarefa */}
+          <div className={styles.taskIdentity}>
+            <span className={styles.taskId}>#{task.id}</span>
+            <h2 className={styles.title}>{task.descricao}</h2>
           </div>
 
           {/* Barra de ações */}
@@ -177,9 +176,11 @@ export function TaskModal({ task, isOpen, onClose, onStatusChange }: Props) {
 
         {/* ── Corpo ── */}
         <div className={styles.body}>
-          {activeTab === 'descricao' && <TabDescricao task={task} />}
-          {activeTab === 'previsao'  && <TabPrevisao  task={task} />}
-          {activeTab === 'execucao'  && <TabExecucao  task={task} />}
+          {activeTab === 'descricao'  && <TabDescricao  task={task} />}
+          {activeTab === 'previsao'   && <TabPrevisao   task={task} />}
+          {activeTab === 'detalhes'   && <TabDetalhes   task={task} />}
+          {activeTab === 'execucao'   && <TabExecucao   task={task} />}
+          {activeTab === 'historico'  && <TabHistorico  task={task} timerEvents={timerEvents} />}
         </div>
 
       </div>

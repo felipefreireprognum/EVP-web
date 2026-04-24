@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Save } from 'lucide-react';
+import { Save, CheckCircle2, Loader2 } from 'lucide-react';
+import { taskService } from '@/src/services/taskService';
 import type { Task } from '@/src/types/task';
 import styles from './TabExecucao.module.css';
 
@@ -25,35 +26,31 @@ export function TabExecucao({ task }: Props) {
   const [resultado,       setResultado]       = useState(task.comErro ? 'Finalizada com erro' : 'Finalizada normalmente');
   const [tipoFinalizacao, setTipoFinalizacao] = useState(task.tipoFinalizacao ?? '');
   const [descricao,       setDescricao]       = useState('');
+  const [saving,          setSaving]          = useState(false);
   const [saved,           setSaved]           = useState(false);
 
-  function handleSave() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  async function handleSave() {
+    if (saving) return;
+    setSaving(true);
+    try {
+      await taskService.saveExecution(task.id, { resultado, tipoFinalizacao, descricao });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <div className={styles.root}>
 
-      <div className={styles.intro}>
-        <p className={styles.introText}>
-          Registre o que foi realizado, como a tarefa foi finalizada e qualquer
-          observação relevante para o histórico.
-        </p>
-      </div>
-
-      {/* Selects no mesmo padrão de tabela */}
       <section className={styles.section}>
         <span className={styles.sectionTitle}>Resultado</span>
         <div className={styles.infoList}>
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Como foi finalizada</span>
             <div className={styles.infoValue}>
-              <select
-                className={styles.select}
-                value={resultado}
-                onChange={e => setResultado(e.target.value)}
-              >
+              <select className={styles.select} value={resultado} onChange={e => setResultado(e.target.value)}>
                 {RESULTADO_OPTS.map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
@@ -61,11 +58,7 @@ export function TabExecucao({ task }: Props) {
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>Tipo de finalização</span>
             <div className={styles.infoValue}>
-              <select
-                className={styles.select}
-                value={tipoFinalizacao}
-                onChange={e => setTipoFinalizacao(e.target.value)}
-              >
+              <select className={styles.select} value={tipoFinalizacao} onChange={e => setTipoFinalizacao(e.target.value)}>
                 <option value="">Selecione...</option>
                 {FINALIZACAO_OPTS.map(o => <option key={o} value={o}>{o}</option>)}
               </select>
@@ -74,7 +67,6 @@ export function TabExecucao({ task }: Props) {
         </div>
       </section>
 
-      {/* Textarea */}
       <section className={styles.textareaSection}>
         <span className={styles.label}>
           O que foi feito
@@ -90,16 +82,18 @@ export function TabExecucao({ task }: Props) {
         <span className={styles.charCount}>{descricao.length} caracteres</span>
       </section>
 
-      <div className={styles.footer}>
+      <div className={styles.saveRow}>
         <span className={styles.taskRef}>
           Tarefa <strong>#{task.id}</strong> · {task.scatNumero}
         </span>
         <button
           className={`${styles.saveBtn} ${saved ? styles.saveBtnDone : ''}`}
           onClick={handleSave}
+          disabled={saving}
         >
-          <Save size={14} />
-          {saved ? 'Salvo!' : 'Salvar execução'}
+          {saving ? <Loader2 size={14} className={styles.spin} /> :
+           saved   ? <CheckCircle2 size={14} /> : <Save size={14} />}
+          {saving ? 'Salvando...' : saved ? 'Salvo!' : 'Salvar execução'}
         </button>
       </div>
 

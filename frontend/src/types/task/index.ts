@@ -3,10 +3,16 @@ import type { Sector } from '@/src/types/sector';
 import type { Client } from '@/src/types/client';
 import type { System } from '@/src/types/system';
 
+export interface TimerEvent {
+  type: 'iniciar' | 'pausar' | 'finalizar';
+  timestamp: Date;
+}
+
 export interface TaskAPI {
   id: number;
   scat_id: number;
   scat_numero: string;
+  scat_titulo?: string;
   descricao: string;
   status: 'disponivel' | 'em_andamento' | 'em_pausa' | 'vencida' | 'concluida';
   responsavel_id: number;
@@ -32,6 +38,7 @@ export interface Task {
   id: number;
   scatId: number;
   scatNumero: string;
+  scatTitulo?: string;
   descricao: string;
   status: TaskStatus;
   responsavel: User;

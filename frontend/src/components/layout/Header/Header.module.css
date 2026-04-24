@@ -1,74 +1,103 @@
 .header {
   height: var(--header-height);
-  background: var(--gradient-blue);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--spacing-6);
-  box-shadow: 0 2px 16px rgba(27, 57, 129, 0.30);
-  flex-shrink: 0;
+  position: sticky;
+  top: 0;
   z-index: var(--z-sticky);
-  position: relative;
+  background: rgba(244, 247, 251, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-primary-whisper);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-6);
+  flex-shrink: 0;
 }
 
 .left { display: flex; align-items: center; gap: var(--spacing-4); }
 .right { display: flex; align-items: center; gap: var(--spacing-3); }
 
+/* Hamburger — only visible on mobile */
 .menuBtn {
-  display: flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px;
-  border: none; background: rgba(255,255,255,0.15);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: var(--color-primary-whisper);
   border-radius: var(--radius-md);
-  color: white; cursor: pointer;
+  color: var(--color-primary-deep);
+  cursor: pointer;
   transition: background var(--transition-fast);
+  flex-shrink: 0;
 }
-.menuBtn:hover { background: rgba(255,255,255,0.28); }
+.menuBtn:hover { background: var(--color-primary-soft); }
 
-.brand { display: flex; align-items: center; gap: var(--spacing-3); }
+/* Brand — hidden on desktop, shown on mobile */
+.brand {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
 
 .logoMark {
   background: #FFE87C;
-  color: #1b3981;
+  color: var(--color-primary-deep);
   font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
-  padding: 5px 12px;
+  font-size: 11px;
+  padding: 5px 10px;
   border-radius: var(--radius-md);
-  letter-spacing: 0.10em;
+  letter-spacing: 0.12em;
 }
 
 .brandName {
-  color: rgba(255,255,255,0.95);
+  color: var(--color-text);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
 }
 
 .brandSep {
-  color: rgba(255,255,255,0.40);
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-regular);
   margin: 0 2px;
 }
 
+/* User chip — visible on both, hidden on desktop when sidebar shows user info */
 .userName {
-  color: rgba(255,255,255,0.90);
+  color: var(--color-text-soft);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  background: rgba(255,255,255,0.14);
+  background: var(--color-primary-whisper);
   padding: 4px 12px;
   border-radius: var(--radius-full);
 }
 
 .logoutBtn {
-  display: flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px;
-  border: none; background: rgba(255,255,255,0.14);
-  border-radius: 10px;
-  color: rgba(255,255,255,0.80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--color-primary-whisper);
+  border-radius: var(--radius-md);
+  color: var(--color-text-soft);
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
-.logoutBtn:hover { background: rgba(255,255,255,0.25); color: #ffffff; }
+.logoutBtn:hover { background: #FFF0F0; color: #C0392B; }
 
-@media (max-width: 768px) {
-  .brandName { display: none; }
+/* ── Desktop: sidebar has brand + user, so header is minimal ── */
+@media (min-width: 769px) {
   .userName { display: none; }
+  .logoutBtn { display: none; }
+}
+
+/* ── Mobile: sidebar is hidden, so header shows brand + actions ── */
+@media (max-width: 768px) {
   .header { padding: 0 var(--spacing-4); }
+  .menuBtn { display: flex; }
+  .brand { display: flex; }
 }

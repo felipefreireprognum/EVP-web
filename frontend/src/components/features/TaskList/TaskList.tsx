@@ -1,11 +1,11 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import {
   useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel,
   flexRender, type ColumnDef, type SortingState, type VisibilityState,
 } from '@tanstack/react-table';
 import { Search, Filter, Columns3, ChevronUp, ChevronDown, ChevronsUpDown,
-  ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+  ChevronLeft, ChevronRight, AlertTriangle, Play, Pause, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/src/components/ui/Button';
 import { Input } from '@/src/components/ui/Input';
 import { TaskStatusBadge } from '@/src/components/shared/StatusBadge';
@@ -23,15 +23,18 @@ import styles from './TaskList.module.css';
 interface TaskListProps {
   tasks: Task[];
   onTaskClick: (task: Task) => void;
+  onStatusChange?: (taskId: number, status: Task['status']) => Promise<void>;
 }
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
-export function TaskList({ tasks, onTaskClick }: TaskListProps) {
+export function TaskList({ tasks, onTaskClick, onStatusChange }: TaskListProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     sistema: false, inicio: false, terminadoEm: false, pontos: false,
   });
+  const onStatusChangeRef = useRef(onStatusChange);
+  onStatusChangeRef.current = onStatusChange;
   const [showColMenu, setShowColMenu] = useState(false);
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
@@ -73,6 +76,39 @@ export function TaskList({ tasks, onTaskClick }: TaskListProps) {
     { id: 'horas', accessorKey: 'horas', header: STRINGS.tarefas.colunas.horas, size: 80,
       cell: info => formatHours(info.getValue<number>()) },
     { id: 'pontos', accessorKey: 'pontosPrevistos', header: STRINGS.tarefas.colunas.pontos, size: 70 },
+    { id: 'acoes', header: '', size: 90, enableSorting: false,
+      cell: info => {
+        const t = info.row.original;
+        const canStart  = t.status === 'disponivel' || t.status === 'em_pausa' || t.status === 'vencida';
+        const canPause  = t.status === 'em_andamento';
+        const canFinish = t.status !== 'concluida';
+        return (
+          <div className={styles.actionsCell} onClick={e => e.stopPropagation()}>
+            {canStart && (
+              <button className={`${styles.rowBtn} ${styles.rowBtnPlay}`}
+                title={t.status === 'em_pausa' ? 'Retomar' : 'Iniciar'}
+                onClick={() => onStatusChangeRef.current?.(t.id, 'em_andamento')}>
+                <Play size={12} />
+              </button>
+            )}
+            {canPause && (
+              <button className={`${styles.rowBtn} ${styles.rowBtnPause}`}
+                title="Pausar"
+                onClick={() => onStatusChangeRef.current?.(t.id, 'em_pausa')}>
+                <Pause size={12} />
+              </button>
+            )}
+            {canFinish && (
+              <button className={`${styles.rowBtn} ${styles.rowBtnFinish}`}
+                title="Finalizar"
+                onClick={() => onStatusChangeRef.current?.(t.id, 'concluida')}>
+                <CheckCircle2 size={12} />
+              </button>
+            )}
+          </div>
+        );
+      }
+    },
   ], []);
 
   const mobileColumns = useMemo(() => columns.filter(c =>

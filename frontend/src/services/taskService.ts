@@ -29,4 +29,14 @@ export const taskService = {
   updateStatus: async (id: number, status: Task['status']): Promise<void> => {
     await mockApi.updateTaskStatus(id, status);
   },
+
+  saveExecution: async (id: number, data: { resultado: string; tipoFinalizacao: string; descricao: string }): Promise<void> => {
+    await mockApi.saveTaskExecution(id, data);
+  },
+
+  logTimerEvent: (taskId: number, type: 'iniciar' | 'pausar' | 'finalizar'): void => {
+    mockApi.logTimerEvent(taskId, type);
+  },
+
+  getTimerEvents: (taskId: number) => mockApi.getTimerEvents(taskId),
 };

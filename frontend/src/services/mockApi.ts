@@ -27,7 +27,14 @@ const sectors: SectorAPI[] = sectorsRaw as SectorAPI[];
 const clients: ClientAPI[] = clientsRaw as ClientAPI[];
 const systems: SystemAPI[] = systemsRaw as SystemAPI[];
 
-const taskStatusMemo = new Map<number, TaskAPI['status']>();
+const taskStatusMemo    = new Map<number, TaskAPI['status']>();
+const taskExecutionMemo = new Map<number, { resultado: string; tipoFinalizacao: string; descricao: string }>();
+const timerEventsMap    = new Map<number, { type: 'iniciar' | 'pausar' | 'finalizar'; timestamp: string }[]>();
+
+function enrichWithScat(task: TaskAPI): TaskAPI {
+  const scat = scats.find(s => s.id === task.scat_id);
+  return { ...task, scat_titulo: scat?.titulo };
+}
 
 export const mockApi = {
   // Refs
@@ -43,7 +50,7 @@ export const mockApi = {
   // Tasks
   getTasks: async (filters?: TaskFilters): Promise<TaskAPI[]> => {
     await sleep(LATENCY_MS);
-    const withOverrides = tasks.map(t => ({
+    const withOverrides = tasks.map(t => enrichWithScat({
       ...t,
       status: taskStatusMemo.get(t.id) ?? t.status,
     }));
@@ -54,19 +61,36 @@ export const mockApi = {
     await sleep(LATENCY_MS);
     const task = tasks.find(t => t.id === id);
     if (!task) throw new Error('Tarefa não encontrada');
-    return { ...task, status: taskStatusMemo.get(task.id) ?? task.status };
+    return enrichWithScat({ ...task, status: taskStatusMemo.get(task.id) ?? task.status });
   },
 
   getTasksByScatId: async (scatId: number): Promise<TaskAPI[]> => {
     await sleep(LATENCY_MS);
     return tasks
       .filter(t => t.scat_id === scatId)
-      .map(t => ({ ...t, status: taskStatusMemo.get(t.id) ?? t.status }));
+      .map(t => enrichWithScat({ ...t, status: taskStatusMemo.get(t.id) ?? t.status }));
   },
 
   updateTaskStatus: async (id: number, status: TaskAPI['status']): Promise<void> => {
     await sleep(200);
     taskStatusMemo.set(id, status);
+  },
+
+  saveTaskExecution: async (id: number, data: { resultado: string; tipoFinalizacao: string; descricao: string }): Promise<void> => {
+    await sleep(300);
+    taskExecutionMemo.set(id, data);
+  },
+
+  getTaskExecution: (id: number) => taskExecutionMemo.get(id) ?? null,
+
+  logTimerEvent: (taskId: number, type: 'iniciar' | 'pausar' | 'finalizar'): void => {
+    const existing = timerEventsMap.get(taskId) ?? [];
+    existing.push({ type, timestamp: new Date().toISOString() });
+    timerEventsMap.set(taskId, existing);
+  },
+
+  getTimerEvents: (taskId: number): { type: 'iniciar' | 'pausar' | 'finalizar'; timestamp: Date }[] => {
+    return (timerEventsMap.get(taskId) ?? []).map(e => ({ ...e, timestamp: new Date(e.timestamp) }));
   },
 
   // Scats

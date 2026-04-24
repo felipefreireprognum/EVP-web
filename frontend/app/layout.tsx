@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { IBM_Plex_Sans } from 'next/font/google';
 import { AuthProvider } from '@/src/contexts/AuthContext';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'EVP — Gestão de Tarefas',
@@ -13,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.variable}>
+      <body className={ibmPlexSans.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
